@@ -1,5 +1,7 @@
 package study.datajpa.repository;
 
+import static org.mockito.Mockito.lenient;
+
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -58,5 +60,21 @@ public class MemberRepositoryTest {
 
         long deleteCount = memberRepository.count();
         Assertions.assertThat(deleteCount).isEqualTo(0);
+    }
+
+    @Test
+    void findByUsernameAndAgeGreaterThan() {
+
+        Member m1 = new Member("memberC", 12);
+        Member m2 = new Member("memberC", 20);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> list = memberRepository.findByUsernameAndAgeGreaterThan("memberC", 15);
+
+        Assertions.assertThat(list.get(0).getUsername()).isEqualTo("memberC");
+        Assertions.assertThat(list.size()).isEqualTo(1);
+
     }
 }
