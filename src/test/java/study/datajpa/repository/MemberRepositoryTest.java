@@ -1,7 +1,5 @@
 package study.datajpa.repository;
 
-import static org.mockito.Mockito.lenient;
-
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
