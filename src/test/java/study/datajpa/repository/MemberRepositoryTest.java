@@ -2,6 +2,7 @@ package study.datajpa.repository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -143,7 +144,18 @@ public class MemberRepositoryTest {
 
         List<Member> list = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
         System.out.println(list.get(0));
+    }
 
+    @Test
+    void testReturnType() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
 
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        Optional<Member> result = memberRepository.findOptionalByUsername("AAA");
+        // Optional<Member> result = memberRepository.findOptionalByUsername("AAB");
+        System.out.println(result.orElse(new Member("no data")));
     }
 }
