@@ -9,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import study.datajpa.dto.MemberDTO;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 @SpringBootTest
 @Transactional // test 코드에서 @transactional 은 실행 후 모든 데이터 rollback
@@ -17,6 +19,7 @@ import study.datajpa.entity.Member;
 public class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
+    @Autowired TeamRepository teamRepository;
 
     @Test
     void testMember() {
@@ -98,5 +101,37 @@ public class MemberRepositoryTest {
 
         List<Member> result = memberRepository.findUser("AAA", 10);
         Assertions.assertThat(result.get(0)).isEqualTo(member1);
+    }
+
+    @Test
+    void testFindUsernameList() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        List<String> list = memberRepository.findUsernameList();
+
+        for (String name : list) {
+            System.out.println("===========name : " + name);
+        }
+    }
+
+    @Test
+    void testFindMemberDTO() {
+        Team team = new Team("teamA");
+        teamRepository.save(team);
+
+        Member member1 = new Member("AAA", 10, team);
+        memberRepository.save(member1);
+
+        List<MemberDTO> dto = memberRepository.findMemberDTO();
+        for (MemberDTO memberDTO : dto) {
+            System.out.println(memberDTO);
+            
+        }
+
+
     }
 }
