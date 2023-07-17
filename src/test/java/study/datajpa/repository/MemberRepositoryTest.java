@@ -1,5 +1,6 @@
 package study.datajpa.repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -129,8 +130,19 @@ public class MemberRepositoryTest {
         List<MemberDTO> dto = memberRepository.findMemberDTO();
         for (MemberDTO memberDTO : dto) {
             System.out.println(memberDTO);
-            
         }
+    }
+
+    @Test
+    void testFindByNames() {
+        Member member1 = new Member("AAA", 10);
+        Member member2 = new Member("BBB", 20);
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        List<Member> list = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
+        System.out.println(list.get(0));
 
 
     }
