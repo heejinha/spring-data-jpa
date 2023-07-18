@@ -22,8 +22,8 @@ inflean | 실전! 스프링 데이터 JPA 수강 기록
  - [x] @Query, 값, DTO 조회하기
  - [x] 파리미터 바인딩 
  - [x] 반환 타입
- - [ ] 순수 JPA 페이징과 정렬
- - [ ] 스프링 데이터 JPA 페이징과 정렬
+ - [x] 순수 JPA 페이징과 정렬
+ - [x] 스프링 데이터 JPA 페이징과 정렬
  - [ ] 벌크성 수정 쿼리
  - [ ] @EntityGraph
  - [ ] JPA Hint & Lock 
