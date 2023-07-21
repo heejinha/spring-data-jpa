@@ -29,6 +29,7 @@ public class MemberRepositoryTest {
     @Autowired MemberRepository memberRepository;
     @Autowired TeamRepository teamRepository;
     @PersistenceContext EntityManager em;
+    @Autowired MemberQueryRepository memberQueryRepository;
 
     @Test
     void testMember() {
@@ -308,5 +309,11 @@ public class MemberRepositoryTest {
 
         // when
         Member findMember =  memberRepository.findOneLockByUsername("member1");
+    }
+
+    @Test
+    void callCustom() {
+        // memberRepository.findMemberCustom();
+        memberQueryRepository.findAllMembers();
     }
 }

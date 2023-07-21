@@ -20,7 +20,7 @@ import study.datajpa.dto.MemberDTO;
 import study.datajpa.entity.Member;
 
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
