@@ -15,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import study.datajpa.dto.MemberDTO;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
@@ -26,6 +28,7 @@ public class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired TeamRepository teamRepository;
+    @PersistenceContext EntityManager em;
 
     @Test
     void testMember() {
@@ -234,5 +237,46 @@ public class MemberRepositoryTest {
 
         // then
         Assertions.assertThat(count).isEqualTo(3);
+    }
+
+    @Test
+    public void findMemberLazy() {
+        // given
+        // member1 -> teamA, member2 -> teamB
+
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        // when N + 1
+        /**
+         *
+         * select member 쿼리만 실행. team 객체는 Proxy 객체로 셋팅 됨           
+         *   -> findMemberFetchJoin() 이용해서 fetch join 사용 가능
+         *   -> @EntityGraph 이용해서 fetch 조인 가능
+         *   
+         **/ 
+        List<Member> members = memberRepository.findAll();
+        // left join fetch 를 이용해 한꺼번에 member, team 객체 쿼리 해옴
+        // List<Member> members = memberRepository.findMemberFetchJoin();
+
+
+        for (Member member : members) {
+            System.out.println("member = " + member);
+            // proxy 객체만 조회 됨.
+            // member.team class = class study.datajpa.entity.Team$HibernateProxy$JAWTOiiD
+            System.out.println("member.team class = " + member.getTeam().getClass());
+            // member 의 team 정보 호출 시, lazy loading 으로 실제 select team 쿼리 실행 됨
+            System.out.println("member.team = " + member.getTeam().getName());
+        }
     }
 }
