@@ -11,6 +11,7 @@ import jakarta.persistence.NamedQuery;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -30,6 +31,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    @Setter
     private String username;
 
     private int age;
