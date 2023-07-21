@@ -217,4 +217,22 @@ public class MemberRepositoryTest {
         Assertions.assertThat(result.hasPrevious()).isEqualTo(false);
 
     }
+
+    @Test
+    void bulkUpdate() {
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        // when
+        int count = memberRepository.updateBulkAge(20);
+  
+        List<Member> list = memberRepository.findByUsername("member5");
+        System.out.println("======== " + list.get(0).getAge());
+
+        // then
+        Assertions.assertThat(count).isEqualTo(3);
+    }
 }
